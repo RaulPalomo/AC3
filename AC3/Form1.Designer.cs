@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
-            textBox1 = new TextBox();
+            components = new System.ComponentModel.Container();
+            cbAny = new ComboBox();
+            cbComarca = new ComboBox();
+            txtPoblacio = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -45,31 +46,47 @@
             label12 = new Label();
             label13 = new Label();
             dataGridView1 = new DataGridView();
+            txtXarxa = new TextBox();
+            txtAct = new TextBox();
+            txtTotal = new TextBox();
+            txtCapita = new TextBox();
+            btnGuardar = new Button();
+            btnNetejaar = new Button();
+            errorPoblacio = new ErrorProvider(components);
+            errorXarxa = new ErrorProvider(components);
+            errorAct = new ErrorProvider(components);
+            errorCapita = new ErrorProvider(components);
+            errorTotal = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorPoblacio).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorXarxa).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorAct).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorCapita).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorTotal).BeginInit();
             SuspendLayout();
             // 
-            // comboBox1
+            // cbAny
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(70, 98);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 0;
+            cbAny.FormattingEnabled = true;
+            cbAny.Location = new Point(70, 98);
+            cbAny.Name = "cbAny";
+            cbAny.Size = new Size(121, 23);
+            cbAny.TabIndex = 0;
             // 
-            // comboBox2
+            // cbComarca
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(233, 98);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(121, 23);
-            comboBox2.TabIndex = 1;
+            cbComarca.FormattingEnabled = true;
+            cbComarca.Location = new Point(233, 98);
+            cbComarca.Name = "cbComarca";
+            cbComarca.Size = new Size(121, 23);
+            cbComarca.TabIndex = 1;
             // 
-            // textBox1
+            // txtPoblacio
             // 
-            textBox1.Location = new Point(397, 98);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 2;
+            txtPoblacio.Location = new Point(397, 98);
+            txtPoblacio.Name = "txtPoblacio";
+            txtPoblacio.Size = new Size(100, 23);
+            txtPoblacio.TabIndex = 2;
             // 
             // label1
             // 
@@ -119,7 +136,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(442, 142);
+            label6.Location = new Point(405, 145);
             label6.Name = "label6";
             label6.Size = new Size(159, 15);
             label6.TabIndex = 9;
@@ -128,7 +145,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(442, 192);
+            label7.Location = new Point(524, 187);
             label7.Name = "label7";
             label7.Size = new Size(32, 15);
             label7.TabIndex = 10;
@@ -137,7 +154,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(658, 39);
+            label8.Location = new Point(719, 44);
             label8.Name = "label8";
             label8.Size = new Size(75, 15);
             label8.TabIndex = 11;
@@ -146,7 +163,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(658, 93);
+            label9.Location = new Point(719, 98);
             label9.Name = "label9";
             label9.Size = new Size(117, 15);
             label9.TabIndex = 12;
@@ -155,7 +172,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(658, 131);
+            label10.Location = new Point(719, 136);
             label10.Name = "label10";
             label10.Size = new Size(137, 15);
             label10.TabIndex = 13;
@@ -164,7 +181,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(658, 168);
+            label11.Location = new Point(719, 173);
             label11.Name = "label11";
             label11.Size = new Size(203, 15);
             label11.TabIndex = 14;
@@ -173,7 +190,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(658, 207);
+            label12.Location = new Point(719, 212);
             label12.Name = "label12";
             label12.Size = new Size(212, 15);
             label12.TabIndex = 15;
@@ -191,16 +208,90 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(70, 266);
+            dataGridView1.Location = new Point(70, 305);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(864, 150);
             dataGridView1.TabIndex = 17;
+            // 
+            // txtXarxa
+            // 
+            txtXarxa.Location = new Point(70, 192);
+            txtXarxa.Name = "txtXarxa";
+            txtXarxa.Size = new Size(100, 23);
+            txtXarxa.TabIndex = 18;
+            // 
+            // txtAct
+            // 
+            txtAct.Location = new Point(233, 192);
+            txtAct.Name = "txtAct";
+            txtAct.Size = new Size(100, 23);
+            txtAct.TabIndex = 19;
+            // 
+            // txtTotal
+            // 
+            txtTotal.Location = new Point(570, 184);
+            txtTotal.Name = "txtTotal";
+            txtTotal.Size = new Size(100, 23);
+            txtTotal.TabIndex = 20;
+            // 
+            // txtCapita
+            // 
+            txtCapita.Location = new Point(570, 142);
+            txtCapita.Name = "txtCapita";
+            txtCapita.Size = new Size(100, 23);
+            txtCapita.TabIndex = 21;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.Location = new Point(489, 256);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(75, 23);
+            btnGuardar.TabIndex = 22;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
+            // btnNetejaar
+            // 
+            btnNetejaar.Location = new Point(595, 256);
+            btnNetejaar.Name = "btnNetejaar";
+            btnNetejaar.Size = new Size(75, 23);
+            btnNetejaar.TabIndex = 23;
+            btnNetejaar.Text = "Netejar";
+            btnNetejaar.UseVisualStyleBackColor = true;
+            btnNetejaar.Click += btnNetejaar_Click;
+            // 
+            // errorPoblacio
+            // 
+            errorPoblacio.ContainerControl = this;
+            // 
+            // errorXarxa
+            // 
+            errorXarxa.ContainerControl = this;
+            // 
+            // errorAct
+            // 
+            errorAct.ContainerControl = this;
+            // 
+            // errorCapita
+            // 
+            errorCapita.ContainerControl = this;
+            // 
+            // errorTotal
+            // 
+            errorTotal.ContainerControl = this;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1038, 467);
+            Controls.Add(btnNetejaar);
+            Controls.Add(btnGuardar);
+            Controls.Add(txtCapita);
+            Controls.Add(txtTotal);
+            Controls.Add(txtAct);
+            Controls.Add(txtXarxa);
             Controls.Add(dataGridView1);
             Controls.Add(label13);
             Controls.Add(label12);
@@ -215,21 +306,26 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(textBox1);
-            Controls.Add(comboBox2);
-            Controls.Add(comboBox1);
+            Controls.Add(txtPoblacio);
+            Controls.Add(cbComarca);
+            Controls.Add(cbAny);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorPoblacio).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorXarxa).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorAct).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorCapita).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorTotal).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private TextBox textBox1;
+        private ComboBox cbAny;
+        private ComboBox cbComarca;
+        private TextBox txtPoblacio;
         private Label label1;
         private Label label2;
         private Label label3;
@@ -244,5 +340,16 @@
         private Label label12;
         private Label label13;
         private DataGridView dataGridView1;
+        private TextBox txtXarxa;
+        private TextBox txtAct;
+        private TextBox txtTotal;
+        private TextBox txtCapita;
+        private Button btnGuardar;
+        private Button btnNetejaar;
+        private ErrorProvider errorPoblacio;
+        private ErrorProvider errorXarxa;
+        private ErrorProvider errorAct;
+        private ErrorProvider errorCapita;
+        private ErrorProvider errorTotal;
     }
 }

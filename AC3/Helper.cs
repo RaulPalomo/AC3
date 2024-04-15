@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using AC3;
 using System.Globalization;
+using CsvHelper.Configuration;
 
 namespace GestioAigua
 {
@@ -53,6 +54,19 @@ namespace GestioAigua
                 recordsList.Add(r);
             }
             return recordsList;
+        }
+        public static void Append(Record record)
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = false,
+            };
+            using var stream = File.Open("../../../Consum_d_aigua_a_Catalunya_per_comarques_20240402.csv", FileMode.Append);
+            using var writer = new StreamWriter(stream);
+            using var csvWriter = new CsvWriter(writer, config);
+            
+            csvWriter.WriteRecord(record);
+
         }
         public static void CsvToXml()
         {
@@ -102,19 +116,24 @@ namespace GestioAigua
             xmlDocument.Save("GestioAigua.xml");
             Console.WriteLine(ConvertSuccess);
         }
-        public static List<string> Comarques()
+        public static Dictionary<int,string> Comarques()
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load("GestioAigua.xml");
             XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-            List<string> list = new List<string>();
+            Dictionary<int,string> list = new Dictionary<int,string>();
             foreach (XmlNode node in nodes)
             {
                 foreach (XmlNode singleNode in node)
                 {
                     if (singleNode.Name == "Comarca")
                     {
-                        if (!list.Contains(singleNode.InnerText)){ list.Add(singleNode.InnerText); };
+
+                        if (!list.ContainsKey(Convert.ToInt32(node.SelectSingleNode("Codicomarca").InnerText))) 
+                        { 
+                            list.Add(Convert.ToInt32(node.SelectSingleNode("Codicomarca").InnerText), singleNode.InnerText); 
+                        }
+
                     }
 
                 }
