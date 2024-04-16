@@ -50,7 +50,7 @@ namespace GestioAigua
                 r.DomesticXarxa = Convert.ToInt32(record["Domèsticxarxa"]);
                 r.ActivitatsEconomiques = Convert.ToInt32(record["Activitatseconòmiquesifontspròpies"]);
                 r.Total = Convert.ToInt32(record["Total"]);
-                r.ConsumDomesticPerCapita = Convert.ToDouble(record["Consumdomèsticpercàpita"]);
+                r.ConsumDomesticPerCapita =double.Parse(record["Consumdomèsticpercàpita"]);
                 recordsList.Add(r);
             }
             return recordsList;
@@ -140,126 +140,91 @@ namespace GestioAigua
             }
             return list;
         }
-        //generar tabla de todo el contenido en interficie grafica
 
         
 
 
-        public static void BuscaPerComarca()
+        
+        public static string CalcConsum(string name)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load("GestioAigua.xml");
             XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-            List<string> list = new List<string>();
             foreach (XmlNode node in nodes)
             {
-                XmlNode poblation = node.SelectSingleNode("Població");
-                if (poblation != null && Convert.ToInt32(poblation.InnerText) > 200000)
-                {
 
-                    foreach (XmlNode singleNode in node)
+                if(node.SelectSingleNode("Comarca").InnerText == name)
+                {
+                    XmlNode poblation = node.SelectSingleNode("Població");
+                    double pValue = Convert.ToDouble(poblation.InnerText);
+                    XmlNode net = node.SelectSingleNode("Domèsticxarxa");
+                    double netValue = Convert.ToDouble(net.InnerText);
+                    XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
+                    double cValue = Convert.ToDouble(consum.InnerText);
+                    double result= pValue * cValue / netValue;
+                    result= Math.Round(result, 2);  
+                    return result.ToString();
+                }
+               
+            }
+            return null;
+
+        }
+        
+        public static string ConsDomesticBaix(string any,string comarca)
+        {
+            double bot = 600000;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("GestioAigua.xml");
+            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
+            
+            foreach (XmlNode node in nodes)
+            {
+                XmlNode comarcaNode = node.SelectSingleNode("Comarca");
+                XmlNode yearNode = node.SelectSingleNode("Any");
+                XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
+                if (yearNode.InnerText == any)
+                {
+                    double cValue = Convert.ToDouble(consum.InnerText);
+                    if (cValue < bot)
                     {
-                        if (singleNode.Name == "Comarca")
-                        {
-                            if (!list.Contains(singleNode.InnerText)) list.Add(singleNode.InnerText);
-                        }
+                        bot = cValue;
+                        comarca = comarcaNode.InnerText;
+
+                    }
+                    
+                        
+                }
+            }
+            return comarca;
+
+        }
+        public static string ConsDomesticAlt(string any, string comarca)
+        {
+            double top = 0;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("GestioAigua.xml");
+            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
+
+            foreach (XmlNode node in nodes)
+            {
+                XmlNode comarcaNode = node.SelectSingleNode("Comarca");
+                XmlNode yearNode = node.SelectSingleNode("Any");
+                XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
+                if (yearNode.InnerText == any)
+                {
+                    double cValue = Convert.ToDouble(consum.InnerText);
+                    if (cValue > top)
+                    {
+                        top = cValue;
+                        comarca = comarcaNode.InnerText;
 
                     }
 
 
                 }
-
             }
-            foreach (string comarca in list)
-            {
-                Console.WriteLine("------------------------------------------------");
-                Console.WriteLine(comarca);
-                Console.WriteLine("------------------------------------------------");
-            }
-        }
-        public static void CalcConsum()
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("GestioAigua.xml");
-            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-            foreach (XmlNode node in nodes)
-            {
-                Console.WriteLine("------------------------------------------------");
-                foreach (XmlNode singleNode in node)
-                {
-                    Console.WriteLine($"{singleNode.Name}: {singleNode.InnerText}");
-                }
-                XmlNode poblation = node.SelectSingleNode("Població");
-                double pValue = Convert.ToDouble(poblation.InnerText);
-                XmlNode net = node.SelectSingleNode("Domèsticxarxa");
-                double netValue = Convert.ToDouble(net.InnerText);
-                XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
-                double cValue = Convert.ToDouble(consum.InnerText);
-                Console.WriteLine("Consum doméstic mitjà: "+pValue*cValue/netValue);
-                Console.WriteLine("------------------------------------------------");
-            }
-
-        }
-        public static void ConsDomesticAlt()
-        {
-            double top = 0;
-            string comarca = "", year = "";
-            int last=2022;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("GestioAigua.xml");
-            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-            
-            foreach (XmlNode node in nodes)
-            {
-                XmlNode comarcaNode = node.SelectSingleNode("Comarca");
-                XmlNode yearNode = node.SelectSingleNode("Any");
-                XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
-                double cValue = Convert.ToDouble(consum.InnerText);
-                if (cValue>top)
-                {
-                    top = cValue;
-                    comarca = comarcaNode.InnerText;
-                    year = yearNode.InnerText;
-                }
-                if (Convert.ToInt32(yearNode.InnerText) != last)
-                {
-                    Console.WriteLine(year + " " + comarca);
-                    top = 0;
-                }
-                XmlNode lastYearNode = node.SelectSingleNode("Any");
-                last = Convert.ToInt32(lastYearNode.InnerText);
-            }
-            
-        }
-        public static void ConsDomesticBaix()
-        {
-            double bot = 600000;
-            string comarca = "", year = "";
-            int last = 2022;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("GestioAigua.xml");
-            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-            
-            foreach (XmlNode node in nodes)
-            {
-                XmlNode comarcaNode = node.SelectSingleNode("Comarca");
-                XmlNode yearNode = node.SelectSingleNode("Any");
-                XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
-                double cValue = Convert.ToDouble(consum.InnerText);
-                if (cValue < bot)
-                {
-                    bot = cValue;
-                    comarca = comarcaNode.InnerText;
-                    year = yearNode.InnerText;
-                }
-                if (Convert.ToInt32(yearNode.InnerText) != last)
-                {
-                    Console.WriteLine(year + " " + comarca);
-                    bot = 600000;
-                }
-                XmlNode lastYearNode = node.SelectSingleNode("Any");
-                last = Convert.ToInt32(lastYearNode.InnerText);
-            }
+            return comarca;
 
         }
         public static void Filtrar()

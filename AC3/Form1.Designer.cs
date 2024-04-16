@@ -57,12 +57,20 @@
             errorAct = new ErrorProvider(components);
             errorCapita = new ErrorProvider(components);
             errorTotal = new ErrorProvider(components);
+            errorAny = new ErrorProvider(components);
+            errorComarca = new ErrorProvider(components);
+            lblPob = new Label();
+            lblMitja = new Label();
+            lblAlt = new Label();
+            lblBaix = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorPoblacio).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorXarxa).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorAct).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorCapita).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorTotal).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorAny).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorComarca).BeginInit();
             SuspendLayout();
             // 
             // cbAny
@@ -210,8 +218,10 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(70, 305);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(864, 150);
+            dataGridView1.Size = new Size(887, 150);
             dataGridView1.TabIndex = 17;
+            dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // txtXarxa
             // 
@@ -281,11 +291,59 @@
             // 
             errorTotal.ContainerControl = this;
             // 
+            // errorAny
+            // 
+            errorAny.ContainerControl = this;
+            // 
+            // errorComarca
+            // 
+            errorComarca.ContainerControl = this;
+            // 
+            // lblPob
+            // 
+            lblPob.AutoSize = true;
+            lblPob.Location = new Point(945, 98);
+            lblPob.Name = "lblPob";
+            lblPob.Size = new Size(12, 15);
+            lblPob.TabIndex = 24;
+            lblPob.Text = "-";
+            // 
+            // lblMitja
+            // 
+            lblMitja.AutoSize = true;
+            lblMitja.Location = new Point(945, 136);
+            lblMitja.Name = "lblMitja";
+            lblMitja.Size = new Size(12, 15);
+            lblMitja.TabIndex = 25;
+            lblMitja.Text = "-";
+            // 
+            // lblAlt
+            // 
+            lblAlt.AutoSize = true;
+            lblAlt.Location = new Point(945, 173);
+            lblAlt.Name = "lblAlt";
+            lblAlt.Size = new Size(12, 15);
+            lblAlt.TabIndex = 26;
+            lblAlt.Text = "-";
+            // 
+            // lblBaix
+            // 
+            lblBaix.AutoSize = true;
+            lblBaix.Location = new Point(945, 212);
+            lblBaix.Name = "lblBaix";
+            lblBaix.Size = new Size(12, 15);
+            lblBaix.TabIndex = 27;
+            lblBaix.Text = "-";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1038, 467);
+            Controls.Add(lblBaix);
+            Controls.Add(lblAlt);
+            Controls.Add(lblMitja);
+            Controls.Add(lblPob);
             Controls.Add(btnNetejaar);
             Controls.Add(btnGuardar);
             Controls.Add(txtCapita);
@@ -311,12 +369,15 @@
             Controls.Add(cbAny);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorPoblacio).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorXarxa).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorAct).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorCapita).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorTotal).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorAny).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorComarca).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -351,5 +412,11 @@
         private ErrorProvider errorAct;
         private ErrorProvider errorCapita;
         private ErrorProvider errorTotal;
+        private ErrorProvider errorAny;
+        private ErrorProvider errorComarca;
+        private Label lblBaix;
+        private Label lblAlt;
+        private Label lblMitja;
+        private Label lblPob;
     }
 }

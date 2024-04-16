@@ -17,9 +17,9 @@ namespace AC3
 
             }
             Helper.CsvToXml();
-            Dictionary<int,string> comarques = Helper.Comarques();
+            Dictionary<int, string> comarques = Helper.Comarques();
             cbComarca.DataSource = new BindingSource(comarques, null);
-            cbComarca.DisplayMember = "Value"; 
+            cbComarca.DisplayMember = "Value";
             cbComarca.ValueMember = "Key";
             GenerarTaula(dataGridView1);
         }
@@ -31,9 +31,9 @@ namespace AC3
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            Regex digitos= new Regex(@"^\d+$");
+            Regex digitos = new Regex(@"^\d+$");
             Regex decimales = new Regex(@"^\d+(\.\d{2})?$|^\d+$");
-            if (!digitos.IsMatch(txtPoblacio.Text) || !digitos.IsMatch(txtXarxa.Text) || !digitos.IsMatch(txtAct.Text) || !digitos.IsMatch(txtTotal.Text) || !decimales.IsMatch(txtCapita.Text))
+            if (!cbComarca.Contains(cbComarca) || !cbAny.Contains(cbAny) || !digitos.IsMatch(txtPoblacio.Text) || !digitos.IsMatch(txtXarxa.Text) || !digitos.IsMatch(txtAct.Text) || !digitos.IsMatch(txtTotal.Text) || !decimales.IsMatch(txtCapita.Text))
             {
                 if (!digitos.IsMatch(txtPoblacio.Text))
                 {
@@ -55,10 +55,28 @@ namespace AC3
                 {
                     errorCapita.SetError(txtCapita, "Debe ser un numero mayor a 0 i como màximo con 2 decimales");
                 }
+                if (!cbComarca.Contains(cbComarca))
+                {
+                    errorComarca.SetError(cbComarca, "Debe seleccionar una comarca");
+                }
+                if (!cbAny.Contains(cbAny))
+                {
+                    errorAny.SetError(cbAny, "Debe seleccionar un año");
+                }
 
             }
             else
             {
+                errorAct.Clear();
+                errorCapita.Clear();
+                errorPoblacio.Clear();
+                errorTotal.Clear();
+                errorXarxa.Clear();
+                errorComarca.Clear();
+                errorAny.Clear();
+                errorPoblacio.Clear();
+
+
                 Record record = new Record();
                 record.Any = (int)cbAny.SelectedItem;
                 record.CodiComarca = (int)cbComarca.SelectedValue;
@@ -82,6 +100,29 @@ namespace AC3
             txtPoblacio.Text = "";
             txtTotal.Text = "";
             txtXarxa.Text = "";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int n = e.RowIndex;
+            if (n != -1)
+            {
+
+                lblMitja.Text = Helper.CalcConsum(dataGridView1.Rows[n].Cells[2].Value.ToString());
+                lblPob.Text = Convert.ToInt32(dataGridView1.Rows[n].Cells[3].Value) > 200000 ? "Si" : "No";
+                lblAlt.Text = Helper.ConsDomesticAlt(dataGridView1.Rows[n].Cells[0].Value.ToString(), dataGridView1.Rows[n].Cells[2].Value.ToString()) == dataGridView1.Rows[n].Cells[2].Value.ToString() ? "Si" : "No";
+                lblBaix.Text = Helper.ConsDomesticBaix(dataGridView1.Rows[n].Cells[0].Value.ToString(), dataGridView1.Rows[n].Cells[2].Value.ToString()) == dataGridView1.Rows[n].Cells[2].Value.ToString() ? "Si" : "No";
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
