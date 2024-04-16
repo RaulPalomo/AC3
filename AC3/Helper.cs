@@ -50,7 +50,7 @@ namespace GestioAigua
                 r.DomesticXarxa = Convert.ToInt32(record["Domèsticxarxa"]);
                 r.ActivitatsEconomiques = Convert.ToInt32(record["Activitatseconòmiquesifontspròpies"]);
                 r.Total = Convert.ToInt32(record["Total"]);
-                r.ConsumDomesticPerCapita =double.Parse(record["Consumdomèsticpercàpita"]);
+                r.ConsumDomesticPerCapita = double.Parse(record["Consumdomèsticpercàpita"])/100;
                 recordsList.Add(r);
             }
             return recordsList;
@@ -64,8 +64,11 @@ namespace GestioAigua
             using var stream = File.Open("../../../Consum_d_aigua_a_Catalunya_per_comarques_20240402.csv", FileMode.Append);
             using var writer = new StreamWriter(stream);
             using var csvWriter = new CsvWriter(writer, config);
-            
-            csvWriter.WriteRecord(record);
+            var records = new List<Record>
+            {
+                record
+            };
+            csvWriter.WriteRecords(records);
 
         }
         public static void CsvToXml()
@@ -150,24 +153,23 @@ namespace GestioAigua
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load("GestioAigua.xml");
             XmlNodeList nodes = xmlDoc.SelectNodes("//record");
+            List<double>avg = new List<double>();
             foreach (XmlNode node in nodes)
             {
 
                 if(node.SelectSingleNode("Comarca").InnerText == name)
                 {
-                    XmlNode poblation = node.SelectSingleNode("Població");
-                    double pValue = Convert.ToDouble(poblation.InnerText);
-                    XmlNode net = node.SelectSingleNode("Domèsticxarxa");
-                    double netValue = Convert.ToDouble(net.InnerText);
+                    
                     XmlNode consum = node.SelectSingleNode("Consumdomèsticpercàpita");
                     double cValue = Convert.ToDouble(consum.InnerText);
-                    double result= pValue * cValue / netValue;
-                    result= Math.Round(result, 2);  
-                    return result.ToString();
+                    avg.Add(cValue);
+                    
                 }
                
             }
-            return null;
+            double result = avg.Average()/100;
+            result=Math.Round(result, 2);
+            return result.ToString();
 
         }
         
@@ -227,67 +229,6 @@ namespace GestioAigua
             return comarca;
 
         }
-        public static void Filtrar()
-        {
-            const string Msg="1-Filtrar per nom\n2-Filtrar per codi";
-            int option;
-            bool found = false;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load("GestioAigua.xml");
-            XmlNodeList nodes = xmlDoc.SelectNodes("//record");
-
-            Console.WriteLine(Msg);
-            do
-            {
-                option = Convert.ToInt32(Console.ReadLine());
-            } while (option<1||option>2);
-            if(option == 1)
-            {
-                Console.Write("Escriu el nom: ");
-                string name=Console.ReadLine();
-                foreach (XmlNode node in nodes)
-                {
-                    XmlNode comarca = node.SelectSingleNode("Comarca");
-                    if (comarca != null && comarca.InnerText == name)
-                    {
-
-                        foreach (XmlNode singleNode in node)
-                        {
-                            Console.WriteLine("------------------------------------------------");
-                            Console.WriteLine($"{singleNode.Name}: {singleNode.InnerText}");
-                            Console.WriteLine("------------------------------------------------");
-                        }
-                        found= true;
-
-                    }
-
-                }
-
-            }
-            else
-            {
-                Console.Write("Escriu el codi: ");
-                string cod = Console.ReadLine();
-                foreach (XmlNode node in nodes)
-                {
-                    XmlNode codiComarca = node.SelectSingleNode("Codicomarca");
-                    if (codiComarca != null && codiComarca.InnerText == cod)
-                    {
-                        Console.WriteLine("------------------------------------------------");
-                        foreach (XmlNode singleNode in node)
-                        {
-                            
-                            Console.WriteLine($"{singleNode.Name}: {singleNode.InnerText}");
-                            
-                        }
-                        Console.WriteLine("------------------------------------------------");
-                        found = true;
-
-                    }
-
-                }
-            }
-            
-        }
+       
     }
 }

@@ -33,7 +33,7 @@ namespace AC3
         {
             Regex digitos = new Regex(@"^\d+$");
             Regex decimales = new Regex(@"^\d+(\.\d{2})?$|^\d+$");
-            if (!cbComarca.Contains(cbComarca) || !cbAny.Contains(cbAny) || !digitos.IsMatch(txtPoblacio.Text) || !digitos.IsMatch(txtXarxa.Text) || !digitos.IsMatch(txtAct.Text) || !digitos.IsMatch(txtTotal.Text) || !decimales.IsMatch(txtCapita.Text))
+            if (!cbComarca.Items.Contains(cbComarca.SelectedItem) || !cbAny.Items.Contains(cbAny.SelectedItem) || !digitos.IsMatch(txtPoblacio.Text) || !digitos.IsMatch(txtXarxa.Text) || !digitos.IsMatch(txtAct.Text) || !digitos.IsMatch(txtTotal.Text) || !decimales.IsMatch(txtCapita.Text))
             {
                 if (!digitos.IsMatch(txtPoblacio.Text))
                 {
@@ -55,11 +55,11 @@ namespace AC3
                 {
                     errorCapita.SetError(txtCapita, "Debe ser un numero mayor a 0 i como màximo con 2 decimales");
                 }
-                if (!cbComarca.Contains(cbComarca))
+                if (!cbComarca.Items.Contains(cbComarca.SelectedItem))
                 {
                     errorComarca.SetError(cbComarca, "Debe seleccionar una comarca");
                 }
-                if (!cbAny.Contains(cbAny))
+                if (!cbAny.Items.Contains(cbAny.SelectedItem))
                 {
                     errorAny.SetError(cbAny, "Debe seleccionar un año");
                 }
@@ -67,14 +67,7 @@ namespace AC3
             }
             else
             {
-                errorAct.Clear();
-                errorCapita.Clear();
-                errorPoblacio.Clear();
-                errorTotal.Clear();
-                errorXarxa.Clear();
-                errorComarca.Clear();
-                errorAny.Clear();
-                errorPoblacio.Clear();
+                
 
 
                 Record record = new Record();
@@ -88,6 +81,14 @@ namespace AC3
                 record.ConsumDomesticPerCapita = double.Parse(txtCapita.Text);
                 Helper.Append(record);
                 GenerarTaula(dataGridView1);
+                errorAct.Clear();
+                errorCapita.Clear();
+                errorPoblacio.Clear();
+                errorTotal.Clear();
+                errorXarxa.Clear();
+                errorComarca.Clear();
+                errorAny.Clear();
+                errorPoblacio.Clear();
             }
         }
 
